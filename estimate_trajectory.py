@@ -342,11 +342,6 @@ def get_transformation_params(matches, intrinsic):
                 qy = (temp[1, 2] + temp[2, 1]) / s
                 qz = 0.25 * s
 
-            # qw = np.sqrt(float(1)+temp[0,0]+temp[1,1]+temp[2,2])*0.5
-            # qx = (temp[2,1]-temp[1,2])/(4*qw)
-            # qy = (temp[0,2]-temp[2,0])/(4*qw)
-            # qz = (temp[1,0]-temp[0,1])/(4*qw)
-
             results[id] = list(np.concatenate((-np.dot(tvec.ravel(), temp), np.array([qx, qy, qz, -qw]))))
     return results
 
@@ -380,9 +375,6 @@ def estimate_trajectory(data_dir, out_dir):
 
     intrinsic, rodrigues, translations, projections, rotations = get_all_matrixes(data_dir)
 
-    # tracks, bad_tracks = compute__3d_points(tracks, intrinsic, rodrigues, translations, projections)
-    # known_inliers = extract_points(tracks, bad_tracks)
-
     known_inliers = compute_3d_points(tracks, intrinsic, rodrigues, translations, projections)
     unknown_inliers = get_all_unknown_inliers(supported_imgs, unknown_imgs, data_dir)
 
@@ -398,7 +390,6 @@ def estimate_trajectory(data_dir, out_dir):
     for key in results_2.keys():
         trajectory[key] = results_2[key]
 
-    # Trajectory.write(Dataset.get_result_poses_file(out_dir), trajectory)
     with open(Dataset.get_result_poses_file(out_dir), 'w') as file:
         file.write(Trajectory.FILE_HEADER)
 
