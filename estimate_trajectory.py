@@ -180,51 +180,6 @@ def get_all_matrixes(data_dir, n=50):
 
 
 def compute_3d_points(tracks, intrinsic, rodrigues, translations, projections):
-    # points_3d = []
-    # bad_tracks = []
-    # k = 0
-    # for track in tracks:
-    #     temp_points = []
-    #     points, frames_id = track
-    #     pairs = list(combinations(range(len(points)), 2))
-    #     for i, j in pairs:
-    #         cur_point = cv.triangulatePoints(projections[frames_id[i]],
-    #                                          projections[frames_id[j]],
-    #                                          np.float_(points[i].reshape(1, -1).T),
-    #                                          np.float_(points[j].reshape(1, -1).T))
-    #         if cur_point[3] != 0:
-    #             cur_point = cur_point / cur_point[3]
-    #             temp_points.append(cur_point)
-
-    #     if len(temp_points) > 0:
-    #         point_3d = np.array(temp_points).mean(axis=0)
-
-    #         for i, id in enumerate(frames_id):
-    #             point_reprojection, _ = cv.projectPoints(point_3d[0:3].T,
-    #                                                      rodrigues[id],
-    #                                                      translations[id],
-    #                                                      intrinsic, None)
-
-    #             reprojection_error = np.linalg.norm(points[i].reshape(1, -1) - point_reprojection)
-
-    #             if reprojection_error > 10:
-    #                 bad_tracks.append(k)
-    #                 break
-
-    #     else:
-    #         bad_tracks.append(k)
-
-    #     if k in bad_tracks:
-    #         points_3d.append(None)
-    #     else:
-    #         points_3d.append(point_3d)
-
-    #     k += 1
-
-    # for i, point in enumerate(points_3d):
-    #     if i not in bad_tracks:
-    #         tracks[i].append(point)
-
     known_inliers = {}
 
 
