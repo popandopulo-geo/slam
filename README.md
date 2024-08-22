@@ -1,52 +1,58 @@
-# SLAM Project: Camera Pose Estimation and 3D Scene Reconstruction
+# SLAM (Simultaneous Localization and Mapping) for Scene Structure Reconstruction
 
-This repository contains the implementation of a Simultaneous Localization and Mapping (SLAM) project aimed at reconstructing the 3D structure of a scene from images taken with a moving camera. This educational project demonstrates the principles of SLAM using basic methods.
+This repository contains the implementation of a SLAM-based project, developed as part of the Computer Vision and Image Processing course at the Faculty of Computational Mathematics and Cybernetics, Lomonosov Moscow State University.
 
-## Project Description
+## Project Overview
 
-The task involves reconstructing the camera positions and the 3D structure of the scene using a set of images captured by a single moving camera. This technique is commonly known as "Structure-from-Motion" (SfM) or "Simultaneous Localization and Mapping" (SLAM). The project utilizes monocular SLAM, focusing on images from a single camera.
+The project focuses on reconstructing the 3D structure of a scene using photographs captured from a moving camera. This task is a classic problem in computer vision, commonly referred to as **Structure-from-Motion (SfM)** or **Simultaneous Localization and Mapping (SLAM)**. The implementation is based on a monocular SLAM approach, which involves a single moving camera.
 
-### Key Steps
-
-1. **Feature Detection and Description**: Detect keypoints and compute ORB descriptors for each image. Save these descriptors to avoid recomputation.
-2. **Feature Matching**: Match keypoints between pairs of reference images and filter incorrect matches using the Fundamental matrix and RANSAC algorithm.
-3. **Track Building**: Construct tracks for keypoints across multiple images to represent the same 3D point in different views.
-4. **3D Point Triangulation**: Triangulate the 3D coordinates of points using the known positions of reference cameras.
-5. **Reprojection Error Calculation**: Project 3D points onto images and compute the reprojection error to filter out inaccurate points.
-6. **Pose Estimation**: Estimate the poses of unknown cameras using the matched keypoints and 3D points.
-7. **Save Results**: Save the estimated camera positions in the required format.
-
-## Usage
-
-Prepare the Dataset: Place your images and calibration data in the appropriate folders. The structure should follow the format specified in the task description.
-Run the Algorithm: Execute the estimate_trajectory.py script with the path to the input data and the output directory.
-
-python estimate_trajectory.py /path/to/input/data /path/to/output/folder
-
-Evaluate the Results: Use the provided evaluation scripts to compare the estimated camera positions with the ground truth.
+### Key Topics and Concepts
+- **SLAM**: A method that allows for the reconstruction of the 3D structure of a scene and camera positions using images taken from different angles.
+- **Feature Extraction**: Using ORB (Oriented FAST and Rotated BRIEF) to detect key points and compute descriptors in the images.
+- **Feature Matching**: Matching key points across images using descriptor space and filtering with RANSAC and the fundamental matrix.
+- **3D Point Triangulation**: Reconstructing the 3D coordinates of the scene points.
+- **Reprojection Error**: Measuring the accuracy of the 3D reconstruction by calculating the reprojection error.
 
 ## Project Structure
 
-estimate_trajectory.py: Main script to implement the SLAM algorithm.
-run.py: Script to test the solution with the provided datasets.
-generate_point_cloud.py: Script to generate a point cloud from the estimated trajectory.
-common/: Directory containing utility scripts for dataset handling, intrinsic parameters, and trajectory management.
+- **estimate_trajectory.py**: Core script to estimate the camera trajectories based on the input images.
+- **generate_point_cloud.py**: Script to generate a 3D point cloud from the estimated camera trajectories.
+- **run.py**: Script to test and validate the implementation against provided test datasets.
+- **common/**: Contains helper modules for dataset handling, intrinsics management, and trajectory processing.
+- **tests/**: Includes the test datasets and ground truth for validating the SLAM implementation.
 
-## Data Format
+## Implementation Details
 
-rgb.txt: List of images with their relative paths.
-known_poses.txt: Known camera poses for some images.
-intrinsics.txt: Camera intrinsic parameters.
-Evaluation Criteria
+1. **Feature Detection and Description**: ORB is used to detect and describe key points in each image.
+2. **Feature Matching**: Pairs of key points between images are matched, followed by filtering using the RANSAC algorithm.
+3. **3D Reconstruction**: Triangulation is performed on the matched points to estimate the 3D coordinates of the scene points.
+4. **Camera Pose Estimation**: The pose of the cameras for which positions are unknown is estimated by minimizing the reprojection error.
 
-This project is intended for educational purposes and personal development in the field of computer vision and SLAM. Feel free to explore, modify, and extend the code to better understand the underlying concepts.
+## How to Run
+
+1. Clone the repository:
+    ```bash
+    git clone <repository_url>
+    ```
+2. Run the SLAM pipeline:
+    ```bash
+    python estimate_trajectory.py --input_path <path_to_input_data> --output_path <path_to_save_results>
+    ```
+3. Generate the 3D point cloud:
+    ```bash
+    python generate_point_cloud.py --trajectory_file <path_to_all_poses.txt> --output_path <path_to_save_point_cloud>
+    ```
+
+## Evaluation
+
+The solution is evaluated based on the accuracy of the estimated camera positions compared to the ground truth. The primary metric is the percentage of camera positions estimated with an error of less than 20cm in translation and 15 degrees in rotation.
 
 ## References
 
-OpenCV Documentation: OpenCV
-SLAM Overview Article: Past, Present, and Future of Simultaneous Localization And Mapping
-TU Munich RGB-D SLAM Dataset: Dataset
+- [OpenCV Documentation](https://docs.opencv.org)
+- [TU Munich RGB-D SLAM Dataset](https://vision.in.tum.de/data/datasets/rgbd-dataset)
 
-## License
+## Acknowledgements
 
-This project is licensed under the Apache-2.0 license. See the LICENSE file for details.
+This project was completed as part of the Computer Vision and Image Processing course at the Faculty of Computational Mathematics and Cybernetics, Lomonosov Moscow State University. Special thanks to the course instructors and the Graphics & Media Lab, Vision Group, for their guidance.
+
